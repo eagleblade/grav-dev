@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:latest
+    command: --api --docker
+    restart: always
+    ports:
+      - IP:80:80
+      - IP:443
+#      - 172.28.0.3:2000:8080
+    networks:
+      - web-backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/traefik/traefik.toml:/traefik.toml
+      - /opt/traefik/acme/acme.json:/acme.json
+    container_name: proxy
+    labels:
+      - "traefik.enable=false"
+networks:
+  epost_default:
+    external: true
+  web-backend:
+    external: true
+  backend-management:
+    external: true
