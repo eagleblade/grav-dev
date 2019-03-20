@@ -35,11 +35,6 @@ services:
 networks:
   web-backend:
     external: true
-  backend-management:
-    external: true
-  epost_default:
-    external: true
-
 volumes:
   www-data:
     name: ${DOMAIN}_www-data
