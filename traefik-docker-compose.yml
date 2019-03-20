@@ -13,8 +13,6 @@ services:
       - web-backend
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/traefik/traefik.toml:/traefik.toml
-      - /opt/traefik/acme/acme.json:/acme.json
     container_name: proxy
     labels:
       - "traefik.enable=false"
