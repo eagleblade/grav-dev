@@ -1,0 +1,45 @@
+version: "3.7"
+services:
+  grav:
+    image: grav:supra
+    build: 
+      context: './grav/'
+    networks:
+      - web-backend
+      - epost_default
+    container_name: ${DOMAIN}_grav  
+    volumes:
+      - type: volume
+        source: www-data
+        target: /var/www/html/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:${DOMAIN}"    
+    restart: always
+  sftp:
+    image: grav:sftp
+    build:
+      context: './sftp/'
+    volumes:
+      - type: volume
+        source: www-data
+        target: /home/${USER}/upload
+    container_name: ${DOMAIN}_ftp
+    networks:
+      - backend-management
+    command: ${USER}:${SFTP_PASSWORD}:33
+    labels:
+      - "traefik.enable=false"
+    restart: always
+networks:
+  web-backend:
+    external: true
+  backend-management:
+    external: true
+  epost_default:
+    external: true
+
+volumes:
+  www-data:
+    name: ${DOMAIN}_www-data
